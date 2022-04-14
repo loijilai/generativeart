@@ -103,3 +103,43 @@ The corresponding log file looks like that:
 ## Inspiration
 
 The basic concept is heavily inspired by [Fronkonstin's great blog](https://fronkonstin.com/).
+
+## My note
+### Main function: generative_img.R
+
+The main job of generative_img
+
+1. Call generate_data(formula) and get a returned dataframe storing x-y-points-pairs evaluated in terms of the formula
+
+2. Call geneate_plot (to create plot with ggplot2) with the dataframe obtained from step 1 passed as argument
+
+### Data generation: generate_data.R
+
+Prerequsites:
+  - %>% is called the forward pipe operator
+    - The LHS of %>% will be put into the first argument of the RHS function
+  - length(seq(from = -pi, to = pi, by = 0.01)) is a vector of length 629
+
+Code:
+```
+seq(from = -pi, to = pi, by = 0.01) %>% expand.grid(x_i = ., y_i = .)
+```
+  - expand.grid will return a (629^2 by 2) dataframe consists of rows in the form (x_i, y_i). i.e. all possible combinations of elements of the vectors passed in
+
+    - [See usage of expand.grid](https://vimsky.com/zh-tw/examples/usage/create-a-data-frame-of-all-the-combinations-of-vectors-passed-as-argument-in-r-programming-expand-grid-function.html)
+
+
+```
+seq(from = -pi, to = pi, by = 0.01) %>%
+    expand.grid(x_i = ., y_i = .) %>%
+    dplyr::mutate(!!!formula)
+```
+- [Triple exclamation marks on R](https://stackoverflow.com/questions/61180201/triple-exclamation-marks-on-r)
+
+- The mutate function in dplyr packages will create variables and column bind the new variable into the dataframe passed in. 
+- So after the line of code executed, the dataframe becomes dimension of (629^2 by 4)
+- The (x, y) pair is added in col3 and col4 respectively, with their value evaluated by the formula provided by the user
+
+### Plotting: generate_plot.R
+
+We only plot the last two columns of the dataframe returned by generate_data.R, which is (x, y).
