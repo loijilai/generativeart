@@ -142,4 +142,10 @@ seq(from = -pi, to = pi, by = 0.01) %>%
 
 ### Plotting: generate_plot.R
 
-We only plot the last two columns of the dataframe returned by generate_data.R, which is (x, y).
+[Learn ggplot2 with R-for-data-science](https://r4ds.had.co.nz/data-visualisation.html)
+
+[Learn ggplot2 with this comprehensive guide](https://ggplot2-book.org/coord.html)
+
+- We only plot the last two columns of the dataframe returned by generate_data.R, which is (x, y).
+
+- Note that by default the angle is mapped to the x variable, but you can set theta = "y" to map the angle to the y variable.
